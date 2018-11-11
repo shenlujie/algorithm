@@ -7,6 +7,7 @@ import 随机生成算法测试用例.SortTestHelper;
  * @Description:
  * 设置默认步长为长度的1/2，每次步长为原步长的1/2
  * 对分组内的成员进行插入排序
+ * 存在bug,步长为3时有bug
  * @create: 2018/11/11
  * @Author: SLJ
  */
@@ -16,7 +17,7 @@ public class ShellSort {
 
     public static void shellSort(Comparable[] arr){
         int n = arr.length;
-        int step = n/3;//设置步长为数组长度的1/3
+        int step = n/2;//设置步长为数组长度的1/2
         while (step >= 1){
             for (int i = 0; i < step; i++) {//把数组分为step个组
                 for (int j = i+step; j < n; j += step) {
@@ -33,17 +34,18 @@ public class ShellSort {
                     arr[k+step] = e;
                 }
             }
-            step = step/3;
+            step = step/2;
         }
     }
 
     public static void main(String[] args) {
-        int n = 500000;
+        int n = 12345;
         Integer[] arr = SortTestHelper.generateRandomArray(n,0 ,n );
 //        Integer[] nArr = SortTestHelper.copyArray(arr);
         SortTestHelper.testSort(ShellSort.class, "shellSort", arr);
+        System.out.println(SortTestHelper.isSorted(arr));
 //        SortTestHelper.testSort(InsertionSort.class, "insertSortVersion2", nArr);
-        /*SortTestHelper.printArray(arr,arr.length );
-        SortTestHelper.printArray(nArr,nArr.length );*/
+//        SortTestHelper.printArray(arr,arr.length );
+//        SortTestHelper.printArray(nArr,nArr.length );
     }
 }
