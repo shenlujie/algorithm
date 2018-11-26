@@ -15,8 +15,12 @@ public class Main {
         Component component1 = new Component(sparseGraph);
         System.out.println("稀疏图的连通分量为：" + component1.count());
         System.out.println(component1.isConnected(3, 4));
-        Path path1 = new Path(sparseGraph, 0);
-        path1.showPath(5);
+        Path dfs1 = new Path(sparseGraph, 0);
+        System.out.println("稀疏图的深度优先遍历：");
+        dfs1.showPath(4);
+        ShortestPath bfs1 = new ShortestPath(sparseGraph, 0);
+        System.out.println("稀疏图的广度优先遍历：");
+        bfs1.showPath(4);
 
 
         System.out.println();
@@ -28,7 +32,11 @@ public class Main {
         Component component2 = new Component(denseGraph);
         System.out.println("稠密图的连通分量为：" + component2.count());
         System.out.println(component2.isConnected(0, 12));
-        Path path2 = new Path(denseGraph, 0);
-        path2.showPath(5);
+        Path dfs2 = new Path(denseGraph, 0);
+        System.out.println("稠密图的深度优先遍历：");
+        dfs2.showPath(5);
+        ShortestPath bfs2 = new ShortestPath(denseGraph, 0);
+        System.out.println("稠密图的广度优先遍历：");
+        bfs2.showPath(5);
     }
 }
