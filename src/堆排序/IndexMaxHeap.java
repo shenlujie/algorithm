@@ -3,19 +3,28 @@ package 堆排序;
 import java.util.Random;
 
 /**
- * @Description: 使用动态数组为底层数据结构来实现最大堆
+ * @Description: 实现最大索引堆
+ * 优化：添加reverse[]，存储每个i值在indexes[]中的索引，这样在change函数中就可以使用O（1）的复杂度来找到data[e]的索引值在indexes中的位置了
+ * 有两个性质：
+ * indexes[reverse[i]] = i  很好理解，reverse中存的就是i在indexes中的索引，所以indexes[索引]肯定是i
+ * reverse[indexes[i]] = i  很好理解，indexes[i]是一个值，reverse[值]表示这个值在indexes中的索引，那就是i啊
  * @create: 2018/11/11
  * @Author: SLJ
  */
 public class IndexMaxHeap<E extends Comparable<E>> {
     private E[] data;
     private int[] indexes;
+    private int[] reverse;
     private int count;
     private int capacity;
 
     public IndexMaxHeap(int capacity) {
         data = (E[]) new Comparable[capacity];
         indexes = new int[capacity];
+        reverse = new int[capacity];
+        for (int i = 0; i < capacity; i++) {
+            reverse[i] = -1;//初始化将所有元素标记为-1,当堆中不含有该值时就为-1
+        }
         count = 0;
         this.capacity = capacity;
     }
@@ -28,6 +37,7 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         for (int i = 0; i < capacity; i++) {
             indexes[i] = i;
         }
+        reverse = new int[capacity];
         count = arr.length;
         for (int i = parent(arr.length-1); i >= 0 ; i--) {
             siftDown(i);
@@ -60,7 +70,7 @@ public class IndexMaxHeap<E extends Comparable<E>> {
 
     //用户调用的添加元素的操纵
     public void add(int index,E e){
-        if (count >= capacity){
+        if (count > capacity){
             throw new IllegalArgumentException("IndexMaxHeap has been full");
         }
         if (index < 0 || index >= capacity){
@@ -68,6 +78,7 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         }
         data[index] = e;
         indexes[count] = index;
+        reverse[index] = count;
         count ++;
         siftUp(count - 1);
     }
@@ -87,14 +98,41 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         return data[(indexes[0])];
     }
 
+    //找出堆中最大元素索引并返回
+    public int findMaxIndex(){
+        if (isEmpty()){
+            throw new IllegalArgumentException("cannot find 最大值 when data is empty");
+        }
+        return indexes[0];
+    }
+
     //用户调用去除最大元素
     public E extractMax(){
         E e = findMax();
         swap(0,count - 1);
+        reverse[indexes[count - 1]] = 0;
         count --;
         siftDown(0);
 
         return e;
+    }
+
+    //用户调用除去最大索引
+    public int extractMaxIndex(){
+        int maxIndex = indexes[0];
+        swap(0,count - 1);
+        reverse[indexes[count - 1]] = 0;
+        count --;
+        siftDown(0);
+        return maxIndex;
+    }
+
+    //查看索引i所在位置是否存在元素
+    private boolean contain(int index){
+        if (index < 0 || index >= capacity){
+            throw new IllegalArgumentException("参数index不合法");
+        }
+        return reverse[index] != -1;
     }
 
     private void siftDown(int index){
@@ -112,20 +150,52 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         }
     }
 
+    public E getItem(int index){
+        if (!contain(index)){
+            throw new IllegalArgumentException("参数index不合法");
+        }
+        return data[index];
+    }
+
+    public void change(int index,E e){
+        if (!contain(index)){
+            throw new IllegalArgumentException("参数index不合法");
+        }
+        data[index] = e;
+        /*for (int i = 0; i < count; i++) {
+            if (indexes[i] == index){
+                siftUp(i);
+                siftDown(i);
+                return;
+            }
+        }*/
+        //对这步原本O（n）复杂度进行优化
+        siftUp(reverse[index]);
+        siftDown(reverse[index]);
+    }
+
     //交换indexs中的两个索引指向的元素
     private void swap(int a,int b){
         int item = indexes[a];
         indexes[a] = indexes[b];
         indexes[b] = item;
+
+        reverse[indexes[a]] = a;
+        reverse[indexes[b]] = b;
     }
 
     public static void main(String[] args) {
-        IndexMaxHeap<Integer> maxHeap = new IndexMaxHeap<>(100);
+        /*Integer[] brr = new Integer[]{36,53,24,51,78,85,60};
+        IndexMaxHeap<Integer> maxHeap = new IndexMaxHeap<>(brr);
+        maxHeap.change(3,100 );
+        int n = brr.length;*/
+        IndexMaxHeap<Integer> maxHeap = new IndexMaxHeap<>(10);
         Random random = new Random();
-        int n = 100;
+        int n = 10;
         for (int i = 0; i < n; i++) {
-            maxHeap.add(i,random.nextInt(Integer.MAX_VALUE));
+            maxHeap.add(i,random.nextInt(100));
         }
+        maxHeap.change(3, 105);
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
             arr[i] = maxHeap.extractMax();
