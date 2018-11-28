@@ -30,7 +30,7 @@ public class Edge<Weight extends Number & Comparable> implements Comparable<Edge
     }
 
     public int other(int v){
-        if (v != a || v != b){
+        if (v != a && v != b){
             throw new IllegalArgumentException("参数v不合法");
         }
         return v == a ? b : a;
@@ -38,9 +38,9 @@ public class Edge<Weight extends Number & Comparable> implements Comparable<Edge
 
     @Override
     public int compareTo(Edge<Weight> o) {
-        if (weight.compareTo(o) < 0){
+        if (weight.compareTo(o.weight()) < 0){
             return -1;
-        }else if (weight.compareTo(o) > 0){
+        }else if (weight.compareTo(o.weight()) > 0){
             return +1;
         }else {
             return 0;
