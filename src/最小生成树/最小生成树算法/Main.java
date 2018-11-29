@@ -1,6 +1,5 @@
 package 最小生成树.最小生成树算法;
 
-import 图论.SparseGraph;
 import 最小生成树.Edge;
 import 最小生成树.ReadWeightGraph;
 import 最小生成树.SparseWeightGraph;
@@ -20,6 +19,14 @@ public class Main {
         LazyPrimMST<Double> lazyPrimMST = new LazyPrimMST<>(graph);
         Vector<Edge<Double>> vector = lazyPrimMST.mstEdges();
         for (Edge<Double> edge:vector) {
+            System.out.println(edge);
+        }
+
+        System.out.println();
+
+        PrimMST<Double> primMST = new PrimMST<>(graph);
+        Vector<Edge<Double>> vector1 = primMST.mstEdges();
+        for (Edge<Double> edge:vector1) {
             System.out.println(edge);
         }
     }
