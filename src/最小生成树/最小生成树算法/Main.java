@@ -21,6 +21,7 @@ public class Main {
         for (Edge<Double> edge:vector) {
             System.out.println(edge);
         }
+        System.out.println(lazyPrimMST.result());
 
         System.out.println();
 
@@ -29,5 +30,15 @@ public class Main {
         for (Edge<Double> edge:vector1) {
             System.out.println(edge);
         }
+        System.out.println(primMST.result());
+
+        System.out.println();
+
+        KruskalMST<Double> kruskalMST = new KruskalMST<>(graph);
+        Vector<Edge<Double>> vector2 = kruskalMST.mstEdges();
+        for (Edge<Double> edge:vector2) {
+            System.out.println(edge);
+        }
+        System.out.println(kruskalMST.result());
     }
 }

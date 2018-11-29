@@ -32,7 +32,7 @@ public class PrimMST<Weight extends Number & Comparable<Weight>> {
             toEdge[i] = null;
         }
         mst = new Vector<>();
-
+        mstWeight = 0;
 
         visit(0);//从0节点开始访问
         while (!indexMinHeap.isEmpty()){
@@ -43,7 +43,7 @@ public class PrimMST<Weight extends Number & Comparable<Weight>> {
             mstEdges().add(toEdge[v]);//否则的话就满足最小生成树边的性质，添加到最小生成树中
             visit(v);//继续访问该节点
         }
-        mstWeight = mst.firstElement().weight();
+
         for (Edge<Weight> e:mst) {
             mstWeight = mstWeight.doubleValue() + e.weight().doubleValue();
         }

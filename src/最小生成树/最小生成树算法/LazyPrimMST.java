@@ -28,6 +28,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
             marked[i] = false;
         }
         mst = new Vector<>();
+        mstWeight = 0;
 
 
         visit(0);//从0节点开始访问
@@ -44,7 +45,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
                 visit(edge.w());
             }
         }
-        mstWeight = mst.firstElement().weight();
+
         for (Edge<Weight> e:mst) {
             mstWeight = mstWeight.doubleValue() + e.weight().doubleValue();
         }
