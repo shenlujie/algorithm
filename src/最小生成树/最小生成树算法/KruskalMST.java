@@ -6,7 +6,7 @@ import 最小生成树.WeightGraph;
 import java.util.Vector;
 
 /**
- * @Description: 最小生成树算法Kruskal规则：
+ * @Description: 最小生成树算法Kruskal规则：时间复杂度为O（ElogE），和LazyPrim一样，但是没有LazyPrim快
  * 1、将图中所有边进行排序
  * 2、依次去除权值最小的边
  * 3、如果添加这条边使得最小生成树没有形成环，那么这条边就一定属于最小生成树

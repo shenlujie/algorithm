@@ -128,7 +128,7 @@ public class IndexMinHeap<E extends Comparable<E>> {
     }
 
     //查看索引i所在位置是否存在元素
-    private boolean contain(int index){
+    public boolean contain(int index){
         if (index < 0 || index >= capacity){
             throw new IllegalArgumentException("参数index不合法");
         }
