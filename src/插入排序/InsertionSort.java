@@ -37,6 +37,7 @@ public class InsertionSort {
      * 将arr[i]复制一个副本e，j从i开始依次向前遍历，当arr[j-1]大于e，
      * 把arr[j-1]的元素赋值给arr[j]，j--，不满足就直接break掉
      * 当遍历完时，j的位置就是e要插入的位置
+     * 优化：将第一版的交换操作改成赋值操作
      */
     public static void insertSortVersion2(Comparable[] arr){
         int n = arr.length;

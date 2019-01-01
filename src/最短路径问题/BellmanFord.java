@@ -2,7 +2,6 @@ package 最短路径问题;
 
 import 最小生成树.Edge;
 import 最小生成树.WeightGraph;
-import 最小生成树.最小生成树算法.IndexMinHeap;
 
 import java.util.Stack;
 import java.util.Vector;
@@ -16,10 +15,29 @@ import java.util.Vector;
  */
 public class BellmanFord<Weight extends Number & Comparable<Weight>> {
 
-    private int s;//设置出发节点
-    private WeightGraph graph;//设置连通图
-    private Number[] distTo;//设置从出发点s到各个节点的当前最短路径权值
-    private Edge<Weight>[] from;//设置各个节点的最短路径所对应的那条边，根据这个边可恢复整个路径的所有边
+    /**
+     * 设置出发节点
+     */
+    private int s;
+
+    /**
+     * 设置连通图
+     */
+    private WeightGraph graph;
+
+    /**
+     * 设置从出发点s到各个节点的当前最短路径权值
+     */
+    private Number[] distTo;
+
+    /**
+     * 设置各个节点的最短路径所对应的那条边，根据这个边可恢复整个路径的所有边
+     */
+    private Edge<Weight>[] from;
+
+    /**
+     * 是否有负权环
+     */
     private boolean hasNegativeCycle;
 
     public BellmanFord(int s, WeightGraph graph) {
@@ -35,7 +53,10 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
             from[i] = null;
         }
 
-        /*dijkstra算法过程*/
+        /**
+         * bellmanFord算法过程
+         */
+
         //对起始节点s进行初始化
         distTo[s] = 0.0;
         from[s] = new Edge(s, s, 0.0);
@@ -60,7 +81,10 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
 
     }
 
-    //查看图中是否存在负权环
+
+    /**
+     * @return 查看图中是否存在负权环
+     */
     public boolean detectNegativeCycle(){
         for (int v = 0; v < graph.V(); v++) {
             for (Object e:graph.adj(v)) {
@@ -75,7 +99,13 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
         return false;
     }
 
-    //查看一个节点到出发点s的最短路径权值
+
+    /**
+     * 查看一个节点到出发点s的最短路径权值
+     *
+     * @param w 一个节点
+     * @return 该节点到s的最短路径权值
+     */
     public Number shortestPathTo(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");
@@ -84,7 +114,13 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
         return distTo[w];
     }
 
-    //判断一个节点是否和s之间存在路径
+
+    /**
+     * 判断一个节点是否和s之间存在路径
+     *
+     * @param w 一个节点
+     * @return 该节点到s是否存在路径
+     */
     public boolean hasPathTo(int w){
         if (w < 0 || w >= graph.V()){
             throw new IllegalArgumentException("参数w不合法");
@@ -93,7 +129,12 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
         return from[w] != null;
     }
 
-    //将一个节点到出发点s的最短路径上所有边存到Vector中返回
+    /**
+     * 将一个节点到出发点s的最短路径上所有边存到Vector中返回
+     *
+     * @param w 一个节点
+     * @return 存有该节点到s的最短路径上所有的边的vector
+     */
     public Vector<Edge<Weight>> shortestPath(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");
@@ -119,7 +160,11 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
         return vector;
     }
 
-    //将s到w的最短路径打印输出
+    /**
+     * 将s到w的最短路径打印输出
+     *
+     * @param w 一个节点w
+     */
     public void showPath(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");

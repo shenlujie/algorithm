@@ -11,17 +11,41 @@ import java.util.Vector;
  * @Description: 单源最短路径问题解法之一
  * 1、图可以是有向图或无向图
  * 2、不可以存在负权值
+ *
  * @create: 2018/11/29
  * @Author: SLJ
  */
 public class Dijkstra<Weight extends Number & Comparable<Weight>> {
 
-    private int s;//设置出发节点
-    private WeightGraph graph;//设置连通图
-    private boolean[] marked;//标记每个节点是否被访问过（被访问的意思就是是否加入最短路径生成树）
-    private Number[] distTo;//设置从出发点s到各个节点的当前最短路径权值
-    private Edge<Weight>[] from;//设置各个节点的最短路径所对应的那条边，根据这个边可恢复整个路径的所有边
-    private IndexMinHeap<Weight> indexMinHeap;//最小索引堆用来存储当前访问节点的所有邻边的最短路径权值，并能找出其中的最小值
+    /**
+     * 设置出发节点
+     */
+    private int s;
+
+    /**
+     * 设置连通图
+     */
+    private WeightGraph graph;
+
+    /**
+     * 标记每个节点是否被访问过（被访问的意思就是是否加入最短路径生成树）
+     */
+    private boolean[] marked;
+
+    /**
+     * 设置从出发点s到各个节点的当前最短路径权值
+     */
+    private Number[] distTo;
+
+    /**
+     * 设置各个节点的最短路径所对应的那条边，根据这个边可恢复整个路径的所有边
+     */
+    private Edge<Weight>[] from;
+
+    /**
+     * 最小索引堆用来存储当前访问节点的所有邻边的最短路径权值，并能找出其中的最小值
+     */
+    private IndexMinHeap<Weight> indexMinHeap;
 
     public Dijkstra(int s, WeightGraph graph) {
         if (s < 0 || s >= graph.V()){
@@ -39,7 +63,9 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         }
         indexMinHeap = new IndexMinHeap<>(graph.V());
 
-        /*dijkstra算法过程*/
+        /**
+        * dijkstra算法过程
+        */
         //对起始节点s进行初始化
         marked[s] = true;
         distTo[s] = 0.0;
@@ -68,7 +94,13 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         }
     }
 
-    //查看一个节点到出发点s的最短路径权值
+
+    /**
+     * 查看一个节点到出发点s的最短路径权值
+     *
+     * @param w 一个节点
+     * @return 该节点到出发点s的最短路径权值
+     */
     public Number shortestPathTo(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");
@@ -77,7 +109,13 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         return distTo[w];
     }
 
-    //判断一个节点是否和s之间存在路径
+
+    /**
+     * 判断一个节点是否和s之间存在路径
+     *
+     * @param w 一个节点
+     * @return 该节点到出发点s是否存在路径
+     */
     public boolean hasPathTo(int w){
         if (w < 0 || w >= graph.V()){
             throw new IllegalArgumentException("参数w不合法");
@@ -86,7 +124,13 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         return marked[w];
     }
 
-    //将一个节点到出发点s的最短路径上所有边存到Vector中返回
+
+    /**
+     * 将一个节点到出发点s的最短路径上所有边存到Vector中返回
+     *
+     * @param w 一个节点
+     * @return 存有该节点到s的最短路径上所有的边的vector
+     */
     public Vector<Edge<Weight>> shortestPath(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");
@@ -112,7 +156,12 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         return vector;
     }
 
-    //将s到w的最短路径打印输出
+
+    /**
+     * 将s到w的最短路径打印输出
+     *
+     * @param w 一个节点w
+     */
     public void showPath(int w){
         if (w < 0 || w >= graph.V() || !hasPathTo(w)){
             throw new IllegalArgumentException("参数w不合法");

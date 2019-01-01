@@ -8,6 +8,7 @@ import 随机生成算法测试用例.SortTestHelper;
  * 设置默认步长为长度的1/2，每次步长为原步长的1/2
  * 对分组内的成员进行插入排序
  * 存在bug,步长为3时有bug
+ * 时间复杂度介于O（n^2）和O（nlogn）
  * @create: 2018/11/11
  * @Author: SLJ
  */
