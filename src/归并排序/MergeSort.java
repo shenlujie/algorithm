@@ -1,7 +1,6 @@
 package 归并排序;
 
 import 希尔排序.ShellSort;
-import 插入排序.InsertionSort;
 import 随机生成算法测试用例.SortTestHelper;
 
 /**
@@ -10,19 +9,35 @@ import 随机生成算法测试用例.SortTestHelper;
  * @Author: SLJ
  */
 public class MergeSort {
-    private MergeSort(){}
 
+    /**
+     * 启用归并排序的最小容量
+     */
+    private static final int MIN_SIZE = 15;
+
+    /**
+     * 归并排序
+     *
+     * @param arr 用户输入数组
+     */
     public static void mergeSort(Comparable[] arr){
         int n = arr.length;
-        _mergeSort(arr,0,n-1);
+        mergeSort(arr,0,n-1);
     }
 
-    private static void _mergeSort(Comparable[] arr,int l,int r){
+    /**
+     * 递归实现的自顶向下归并排序，先分割，再归并
+     *
+     * @param arr 要排序的数组
+     * @param l 左指针
+     * @param r 右指针
+     */
+    private static void mergeSort(Comparable[] arr,int l,int r){
         /*if (l >= r){
             return;
         }*/
         //优化为下面这步，当r-l <= 15时，采用插入排序
-        if (r - l <= 15){
+        if (r - l <= MIN_SIZE){
             for (int i = l+1; i <= r ; i++) {
 
                 Comparable e = arr[i];
@@ -39,17 +54,27 @@ public class MergeSort {
             return;
         }
 
-        int mid = l + (r-l)/2;// （l+r）/2可能整数溢出
-        _mergeSort(arr, l,mid );
-        _mergeSort(arr,mid+1 ,r );
+        // （l+r）/2可能整数溢出
+        int mid = l + (r-l)/2;
+        mergeSort(arr, l,mid );
+        mergeSort(arr,mid+1 ,r );
         //merge(arr,l,mid,r); 优化为下面这步
         if (arr[mid].compareTo(arr[mid+1]) > 0){
             merge(arr,l,mid,r);
         }
     }
 
+    /**
+     * 归并操作
+     *
+     * @param arr 要归并的数组
+     * @param l 左指针
+     * @param mid 中指针
+     * @param r 右指针
+     */
     private static void merge(Comparable[] arr,int l,int mid,int r){
-        Comparable[] aux  = new Comparable[r-l+1];//将arr复制一个副本
+        //将arr复制一个副本
+        Comparable[] aux  = new Comparable[r-l+1];
         for (int i = l; i <= r; i++) {
             aux[i-l] = arr[i];
         }
@@ -58,10 +83,13 @@ public class MergeSort {
         int i = l;
         int j = mid+1;
 
+        //k作索引来遍历arr
         for (int k = l; k <= r; k++) {
+            //如果i越界，剩下的arr的空位全由aux[j - l]赋值
             if (i > mid){
                 arr[k] = aux[j-l];
                 j ++;
+            //如果j越界，剩下的arr的空位全由aux[i - l]赋值
             }else if (j > r){
                 arr[k] = aux[i-l];
                 i ++;
